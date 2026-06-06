@@ -91,7 +91,7 @@ cfg = {
 **Val MAE: --**
 **Test MAE: 0.07390870898962021**
 
-## Add Weight Decay with ADAMW Optimizer 
+## Add Weight Decay with ADAMW Optimizer
 
 ### Configuration
 
@@ -106,6 +106,26 @@ cfg = {
 
 #### Results on 10 epochs
 
-**Train MAE: 0.0763**
-**Val MAE: 0.0769**
-**Test MAE: --**
+**Train MAE: 0.0752**
+**Val MAE: 0.0749**
+**Test MAE: 0.07400824874639511**
+
+## Adamw with new loss configuration
+
+### Configuration
+
+```python
+cfg = {
+    "epochs": 10,
+    "weight_decay": 0.004,  # Add weight decay for regularization
+    "use_edge_aware_loss": True,  # Disable edge-aware loss
+    "edge_loss_weight": 0.10,  # Set edge loss weight to 0.10
+}
+```
+
+### Training and Evaluation Results
+
+#### Results on 10 epochs
+**Train MAE: 0.0752**
+**Val MAE: 0.0749**
+**Test MAE: 0.07400824874639511**
