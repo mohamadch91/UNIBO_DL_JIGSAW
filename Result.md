@@ -67,12 +67,45 @@ cfg = {
 **Test MAE: 0.044044896960258484**
 
 #### Results on 10 epochs
+
 **Train MAE: 0.0763**
 **Val MAE: 0.0769**
 **Test MAE: --**
 
+## Add Weight Decay with ADAM Optimizer
 
-## Batch Size 32 on 10 Epochs
+### Configuration
 
+```python
+cfg = {
+    "epochs": 10,
+    "weight_decay": 1e-4,  # Add weight decay for regularization
+}
+```
 
+### Training and Evaluation Results
 
+#### Results on 10 epochs
+
+**Train MAE: 0.0794**
+**Val MAE: --**
+**Test MAE: 0.07390870898962021**
+
+## Add Weight Decay with ADAMW Optimizer 
+
+### Configuration
+
+```python
+cfg = {
+    "epochs": 10,
+    "weight_decay": 0.004,  # Add weight decay for regularization
+}
+```
+
+### Training and Evaluation Results
+
+#### Results on 10 epochs
+
+**Train MAE: 0.0763**
+**Val MAE: 0.0769**
+**Test MAE: --**
