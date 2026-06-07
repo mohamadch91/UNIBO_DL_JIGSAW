@@ -130,6 +130,47 @@ cfg = {
 **Val MAE: 0.0805**
 **Test MAE: 0.0764131173491478**
 
+## Adamw with  increased weight decay and loss configuration
+
+### Configuration
+
+```python
+cfg = {
+    "epochs": 10,
+    "weight_decay": 0.04,  # Add weight decay for regularization
+    "use_edge_aware_loss": True,  # Disable edge-aware loss
+    "edge_loss_weight": 0.10,  # Set edge loss weight to 0.10
+}
+```
+
+### Training and Evaluation Results
+
+#### Results on 10 epochs
+**Train MAE: 0.0781**
+**Val MAE: 0.0757**
+**Test MAE: 0.07548248022794724**
+
+## Adamw with  increased weight decay and without edge-aware loss
+
+### Configuration
+
+```python
+cfg = {
+    "epochs": 10,
+    "weight_decay": 0.04,  # Add weight decay for regularization
+    "use_edge_aware_loss": False,  # Disable edge-aware loss
+  
+}
+```
+
+### Training and Evaluation Results
+
+#### Results on 10 epochs
+**Train MAE: 0.0781**
+**Val MAE: 0.0757**
+**Test MAE: 0.07548248022794724**
+
+
 ## Conclusion
 
 - The base model with 50 epochs achieved a test MAE of approximately 0.044, which is a good starting point.
