@@ -126,6 +126,7 @@ cfg = {
 ### Training and Evaluation Results
 
 #### Results on 10 epochs
+
 **Train MAE: 0.0765**
 **Val MAE: 0.0805**
 **Test MAE: 0.0764131173491478**
@@ -146,6 +147,7 @@ cfg = {
 ### Training and Evaluation Results
 
 #### Results on 10 epochs
+
 **Train MAE: 0.0781**
 **Val MAE: 0.0757**
 **Test MAE: 0.07548248022794724**
@@ -166,10 +168,10 @@ cfg = {
 ### Training and Evaluation Results
 
 #### Results on 10 epochs
+
 **Train MAE: 0.0760**
 **Val MAE: 0.0760**
 **Test MAE: 0.07358548790216446**
-
 
 ## Conclusion
 
