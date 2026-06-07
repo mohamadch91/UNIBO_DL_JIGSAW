@@ -130,8 +130,8 @@ cfg = {
 **Val MAE: 0.0805**
 **Test MAE: 0.0764131173491478**
 
-
 ## Conclusion
+
 - The base model with 50 epochs achieved a test MAE of approximately 0.044, which is a good starting point.
 - Adding weight decay with the ADAM optimizer did not improve the performance, resulting in a test MAE of approximately 0.074.
 - Switching to the ADAMW optimizer with weight decay did better than all the previous configurations, achieving a test MAE of approximately 0.074.
@@ -139,3 +139,4 @@ cfg = {
 - I decided to remove the edge-aware loss and only use the MAE loss, as it seems to be more effective for this task based on the results obtained.
   Also going forward with the ADAMW optimizer with weight decay, as it showed better performance compared to the ADAM optimizer.
 - We need to tune weight decay but it seems that the best value is around 0.004, as it provided the best results among the tested values.
+  
