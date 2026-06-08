@@ -276,18 +276,32 @@ I changed it its worse than the previous configuration, so I will keep it as it 
 
 ## Conclusion
 
-## Conclusion
+The final configuration I will continue with is the original model trained with AdamW, `weight_decay=5e-4`, and no additional changes. This means I will not use edge-aware loss, I will not change the Sinkhorn temperature, I will not change `DifferentiablePatchCanvas`, and I will not add extra residual blocks.
 
-- The base model with 50 epochs achieved a test MAE of approximately 0.044, which is a good starting point.
-- Adding weight decay with the ADAM optimizer did not improve the performance, resulting in a test MAE of approximately 0.074.
-- Switching to the ADAMW optimizer with weight decay did better than all the previous configurations, achieving a test MAE of approximately 0.074.
-- However, adding the edge-aware loss did not improve the performance and resulted in a test MAE of approximately 0.076, which is worse than the previous configuration without the edge-aware loss. This suggests that the edge-aware loss may not be beneficial for this specific task or may require further
-- I decided to remove the edge-aware loss and only use the MAE loss, as it seems to be more effective for this task based on the results obtained.
-  Also going forward with the ADAMW optimizer with weight decay, as it showed better performance compared to the ADAM optimizer.
-- We need to tune weight decay but it seems that the best value is around 5e-4, as it provided the best results among the tested values.
-- After fine tuning the weight decay, I think best value is around 5e-4, as it provided the best results among the tested values.
-- Changing the Sinkhorn temperature did not improve the performance, so I will keep it as it is.
-- Adding two more residual blocks to the repair decoder did improve the performance compared to the best previous configuration.
-- Changing the implementation of the `DifferentiablePatchCanvas` did not improve the performance, so I will keep it as it is.
-- add four more residual blocks to the repair decoder did not improve the performance, so I will keep it as it is.
-- second run of two more residual blocks give worse result. so I decided to remove the additional blocks.
+This choice is based on the experiments: `weight_decay=5e-4` gave the strongest long-run result, with Train MAE `0.0292`, Val MAE `0.0292`, and Test MAE `0.0374` after 100 epochs. It also keeps the model simple, which is important because most extra modifications did not give a stable improvement.
+
+## Explanation of Experiments
+
+- **Base model:** The base model reached Test MAE around `0.044` after 50 epochs. This shows that the original architecture is already able to learn the puzzle reconstruction task well. The 10-epoch result was much worse because the model had not trained long enough yet.
+
+- **Weight decay with Adam:** Adding weight decay to the normal Adam optimizer gave Test MAE around `0.074` after 10 epochs. This did not clearly improve the model. The reason is that Adam does not decouple weight decay from the gradient update, so the regularization effect can be less controlled.
+
+- **Weight decay with AdamW:** AdamW with weight decay gave similar short-run Test MAE around `0.074`, but it is a better optimizer choice for this setup because AdamW applies weight decay separately from the adaptive gradient update. This gives cleaner regularization and is more reliable for tuning.
+
+- **AdamW with edge-aware loss:** Adding edge-aware loss made the result worse, with Test MAE around `0.076`. This probably happened because the extra edge objective pushed the model to focus too much on local patch-border details, while the main task needs globally correct patch placement. Because of this, MAE alone is a better loss for this experiment.
+
+- **Higher weight decay `0.04` with edge-aware loss:** Increasing weight decay while using edge-aware loss did not solve the problem. The Test MAE was still worse than the best configuration. This suggests that the issue was not only overfitting; the edge-aware loss was likely adding an objective that did not match the final evaluation metric.
+
+- **Higher weight decay `0.04` without edge-aware loss:** Removing edge-aware loss improved the short-run Test MAE to around `0.0736`, but this weight decay is still quite strong. A high value can restrict the model too much and may prevent it from learning fine details after longer training.
+
+- **Lower weight decay `5e-4` without edge-aware loss:** This was the best direction. With 100 epochs it reached Test MAE `0.0374`, which is better than the 50-epoch base model. This likely happened because `5e-4` gives enough regularization to reduce overfitting, but it is not so large that it blocks the model from learning useful patch-position features.
+
+- **Lower weight decay `1e-4` and `2e-4`:** These smaller values did not look better in the 10-epoch runs. They probably regularized the model too weakly compared with `5e-4`, so they did not give the same balance between learning capacity and generalization.
+
+- **Changing Sinkhorn temperature:** Changing the Sinkhorn temperature made the result worse, so the original temperature should be kept. The likely reason is that the existing value already gives a good balance between soft assignments during training and stable patch matching.
+
+- **Adding residual blocks:** Adding extra residual blocks did not give a stable improvement. One run with two extra blocks had a reasonable Val MAE, but the second run was worse. This suggests that the deeper repair decoder adds complexity without consistently improving generalization.
+
+- **Changing `DifferentiablePatchCanvas`:** This change did not improve the result. The original canvas implementation is likely already sufficient, and changing it may alter the reconstruction behavior without helping the optimization objective.
+
+Overall, the best next step is to keep the architecture and loss simple, use AdamW with `weight_decay=5e-4`, and train longer with the original Sinkhorn and canvas settings.
