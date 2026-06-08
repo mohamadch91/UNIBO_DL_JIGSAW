@@ -290,3 +290,4 @@ I changed it its worse than the previous configuration, so I will keep it as it 
 - Adding two more residual blocks to the repair decoder did improve the performance compared to the best previous configuration.
 - Changing the implementation of the `DifferentiablePatchCanvas` did not improve the performance, so I will keep it as it is.
 - add four more residual blocks to the repair decoder did not improve the performance, so I will keep it as it is.
+- second run of two more residual blocks give worse result. so I decided to remove the additional blocks.
