@@ -107,7 +107,7 @@ cfg = {
 #### Results on 10 epochs
 
 **Train MAE: 0.0752**
-**Val MAE: 0.0749**
+**Val MAE: 0.0759**
 **Test MAE: 0.07400824874639511**
 
 ## Adamw with new loss configuration
@@ -173,6 +173,109 @@ cfg = {
 **Val MAE: 0.0760**
 **Test MAE: 0.07358548790216446**
 
+
+## Adamw with  decreased weight decay and without edge-aware loss
+
+### Configuration
+
+```python
+cfg = {
+    "epochs": 10,
+    "weight_decay": 5e-4,  # Add weight decay for regularization
+    "use_edge_aware_loss": False,  # Disable edge-aware loss
+  
+}
+```
+
+### Training and Evaluation Results
+
+#### Results on 100 epochs
+
+**Train MAE: 0.0292**
+**Val MAE: 0.0292**
+**Test MAE: 0.0374**
+
+#### Results on 10 epochs
+
+**Train MAE: 0.0755**
+**Val MAE: 0.07534**
+**Test MAE: --**
+
+## Adamw with decreased weight decay
+
+### Configuration
+
+```python
+cfg = {
+    "epochs": 10,
+    "weight_decay": 1e-4,  # Add weight decay for regularization
+    "use_edge_aware_loss": False,  # Disable edge-aware loss
+  
+}
+```
+
+### Training and Evaluation Results
+
+
+#### Results on 10 epochs
+
+**Train MAE: 0.08**
+**Val MAE: 0.07983**
+**Test MAE: 0.0724**
+
+## Adamw with new weight decay again
+
+### Configuration
+
+```python
+cfg = {
+    "epochs": 10,
+    "weight_decay": 2e-4,  # Add weight decay for regularization
+    "use_edge_aware_loss": False,  # Disable edge-aware loss
+  
+}
+```
+
+### Training and Evaluation Results
+
+
+#### Results on 10 epochs
+
+**Train MAE: 0.0786**
+**Val MAE: 0.0788**
+**Test MAE: ---**
+
+## Change Sinkhorn temperature
+
+I changed it its worse than the previous configuration, so I will keep it as it is.
+
+## Add two more residual blocks to the repair decoder
+
+#### Results on 10 epochs
+
+**Train MAE: 0.0770**
+**Val MAE: 0.0750**
+**Test MAE: ---**
+
+## Change in DifferentiablePatchCanvas
+
+#### Results on 10 epochs
+
+**Train MAE: 0.079**
+**Val MAE: 0.076**
+**Test MAE: ---**
+
+
+## Add two more residual block
+
+#### Results on 10 epochs
+
+**Train MAE: 0.078**
+**Val MAE: 0.079**
+**Test MAE: ---**
+
+## Conclusion
+
 ## Conclusion
 
 - The base model with 50 epochs achieved a test MAE of approximately 0.044, which is a good starting point.
@@ -181,6 +284,8 @@ cfg = {
 - However, adding the edge-aware loss did not improve the performance and resulted in a test MAE of approximately 0.076, which is worse than the previous configuration without the edge-aware loss. This suggests that the edge-aware loss may not be beneficial for this specific task or may require further
 - I decided to remove the edge-aware loss and only use the MAE loss, as it seems to be more effective for this task based on the results obtained.
   Also going forward with the ADAMW optimizer with weight decay, as it showed better performance compared to the ADAM optimizer.
-- We need to tune weight decay but it seems that the best value is around 0.004, as it provided the best results among the tested values.
-- After fine tuning the weight decay, I think best value is around 0.04, as it provided the best results among the tested values.
-  
+- We need to tune weight decay but it seems that the best value is around 5e-4, as it provided the best results among the tested values.
+- After fine tuning the weight decay, I think best value is around 5e-4, as it provided the best results among the tested values.
+- Changing the Sinkhorn temperature did not improve the performance, so I will keep it as it is.
+- Adding two more residual blocks to the repair decoder did improve the performance compared to the best previous configuration.
+- Changing the implementation of the `DifferentiablePatchCanvas` did not improve the performance, so I will keep it as it is.
